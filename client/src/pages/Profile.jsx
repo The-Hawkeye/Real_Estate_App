@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import { app } from "../firebase";
 
-import { updateUserFailure,updateUserStart,updateUserSuccess } from "../redux/userSlice";
+import { deleteUserStart,deleteUserFailure,deleteUserSuccess, updateUserFailure,updateUserStart,updateUserSuccess } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 
 export default function Profile() {
@@ -90,6 +90,34 @@ const handleFileUpload =(file)=>{
   }
 
 
+  const handleDelete = async()=>{
+    
+    try{
+      dispatch(deleteUserStart())
+
+      const res  = await fetch(`/api/user/delete/${currentUser.user._id}`,{
+        method:"DELETE"
+      })
+
+      const data  = await res.json();
+
+      if(data.success===false)
+      {
+        dispatch(deleteUserFailure(data.message))
+        return;
+      }
+
+      dispatch(deleteUserSuccess());
+
+
+    }
+    catch(err)
+    {
+      dispatch(deleteUserFailure(err.messagessage))
+    }
+  }
+
+
   return (
     <div className="p-3 max-w-lg m-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -109,7 +137,7 @@ const handleFileUpload =(file)=>{
         <button disabled={loading} className="rounded-lg p-3 bg-slate-700 text-white uppercase hover:opacity-80 disabled:opacity-60">{loading?"Updating...":"Update"}</button>
       </form>
       <div className="w-full flex justify-between mt-3">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
+        <span onClick={handleDelete} className="text-red-700 cursor-pointer">Delete Account</span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
         
       </div>

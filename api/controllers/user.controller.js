@@ -8,8 +8,8 @@ export const user = (req, res)=>{
 
 export const updateUser = async(req,res,next)=>{
 
-    console.log(req.user.id,"user id");
-    console.log(req.params.id,"params id");
+    // console.log(req.user.id,"user id");
+    // console.log(req.params.id,"params id");
 
     if(req.user.id!=req.params.id)
     {
@@ -47,6 +47,20 @@ export const updateUser = async(req,res,next)=>{
         next(err);
     }
 
-    
+}
 
+export const deleteUser = async(req,res,next)=>{
+    if(req.params.id!=req.user.id)
+    {
+        next(errorHandler(401,"You can only delete your own account"));
+    }
+
+    try{
+        await User.findByIdAndDelete(req.params.id);
+        res.clearCookie('token');
+        res.status(200).json("User has been deleted");
+    }catch(err)
+    {
+        next(errorHandler(err.message));
+    }
 }
