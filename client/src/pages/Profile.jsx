@@ -7,6 +7,7 @@ import { app } from "../firebase";
 
 import { deleteUserStart,deleteUserFailure,deleteUserSuccess, updateUserFailure,updateUserStart,updateUserSuccess, signOutUserFailure, signOutUserSuccess } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
+import {Link} from "react-router-dom";
 
 export default function Profile() {
 
@@ -158,6 +159,9 @@ const handleFileUpload =(file)=>{
         <input onChange={handleChange} type="email" placeholder="email" id="email" className="border p-3 rounded-lg" defaultValue={currentUser.user.email}/>
         <input onChange={handleChange} type="password" placeholder="password" id="password" className="border p-3 rounded-lg"/>
         <button disabled={loading} className="rounded-lg p-3 bg-slate-700 text-white uppercase hover:opacity-80 disabled:opacity-60">{loading?"Updating...":"Update"}</button>
+        <Link className="rounded-lg p-3 bg-slate-700 text-white uppercase hover:opacity-80 disabled:opacity-60" to ="/create-listing">
+            Create Listing
+        </Link>
       </form>
       <div className="w-full flex justify-between mt-3">
         <span onClick={handleDelete} className="text-red-700 cursor-pointer">Delete Account</span>
