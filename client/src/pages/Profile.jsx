@@ -167,6 +167,27 @@ const handleFileUpload =(file)=>{
 
   }
 
+  const handleListingDelete=async(id)=>{
+    try{
+        const res = await fetch(`/api/listing/delete/${id}`,{
+          method:"DELETE"
+        })
+
+        const data = await res.json();
+
+        if(data.success==false)
+        {
+          return;
+        }
+
+        setUserListings((prev)=>
+        prev.filter((listing)=>listing._id!=id))
+    }catch(err)
+    {
+        console.log(err.message)
+    }
+  }
+
   return (
     <div className="p-3 max-w-lg m-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -210,7 +231,7 @@ const handleFileUpload =(file)=>{
                     <p className="text-slate-700 font-semibold flex-1 hover:underline truncate">{listing.name}</p>
                   </Link>
                   <div>
-                    <button className="text-red-700 uppercase">Delete</button>
+                    <button onClick={()=>handleListingDelete(listing._id)} className="text-red-700 uppercase">Delete</button>
                     <button className="text-green-700 uppercase">Edit</button>
                   </div>
               </div>
