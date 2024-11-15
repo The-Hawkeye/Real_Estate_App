@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function OAuth() {
 
+    console.log("first")
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
